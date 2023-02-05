@@ -1,4 +1,5 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
+import axios from 'axios';
 
 const productsSlice = createSlice({
     name: 'products',
@@ -6,9 +7,35 @@ const productsSlice = createSlice({
         products: []
     },
     reducers: {
-
+        replaceProducts(state, action) {
+            state.products = action.payload.products;
+        }
     }
 })
 
-export const productAction = productsSlice.actions;
+const productActions = productsSlice.actions;
+
+const getAllProducts = () => {
+    return async (dispatch) => {
+        console.log('Fetching Products from API...');
+        try {
+            axios.get('http://localhost:8000/getAllProducts').then((response) => {
+                console.log(response.data);
+                dispatch(productActions.replaceProducts({products: response.data}));
+                console.log('Products fetched successfully!');
+            }).catch((err) => {
+                console.log("error fetching products");
+                console.log(err);
+            })
+        }
+        catch (err) {
+            console.log(err);
+        }
+    }
+}
+
+export {
+    productActions,
+    getAllProducts
+} 
 export default productsSlice;
