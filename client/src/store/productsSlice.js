@@ -4,11 +4,13 @@ import axios from 'axios';
 const productsSlice = createSlice({
     name: 'products',
     initialState: {
-        products: []
+        products: [],
+        isLoaded: false
     },
     reducers: {
         replaceProducts(state, action) {
             state.products = action.payload.products;
+            state.isLoaded = true;
         }
     }
 })
@@ -19,8 +21,8 @@ const getAllProducts = () => {
     return async (dispatch) => {
         console.log('Fetching Products from API...');
         try {
-            axios.get('http://localhost:8000/getAllProducts').then((response) => {
-                console.log(response.data);
+            await axios.get('http://localhost:8000/getAllProducts').then((response) => {
+                // console.log(response.data);
                 dispatch(productActions.replaceProducts({products: response.data}));
                 console.log('Products fetched successfully!');
             }).catch((err) => {
