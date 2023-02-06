@@ -1,7 +1,7 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 
-import Product from './product/product'
+import Product from './product/Product'
 
 export default function Products() {
     const products = useSelector(state => state.products.products)
@@ -15,6 +15,7 @@ export default function Products() {
                     name={product.name}
                     description={product.description}
                     price={product.price}
+                    img={product.img}
                 />
             )}
         </div>

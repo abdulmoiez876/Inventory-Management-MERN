@@ -1,6 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from 'axios';
 
+import { uiActions } from "./uiSlice";
+
 const productsSlice = createSlice({
     name: 'products',
     initialState: {
@@ -10,7 +12,6 @@ const productsSlice = createSlice({
     reducers: {
         replaceProducts(state, action) {
             state.products = action.payload.products;
-            state.isLoaded = true;
         }
     }
 })
@@ -19,6 +20,7 @@ const productActions = productsSlice.actions;
 
 const getAllProducts = () => {
     return async (dispatch) => {
+        dispatch(uiActions.startLoading());
         console.log('Fetching Products from API...');
         try {
             await axios.get('http://localhost:8000/getAllProducts').then((response) => {
@@ -29,9 +31,11 @@ const getAllProducts = () => {
                 console.log("error fetching products");
                 console.log(err);
             })
+            dispatch(uiActions.stopLoading());
         }
         catch (err) {
             console.log(err);
+            dispatch(uiActions.stopLoading());
         }
     }
 }
