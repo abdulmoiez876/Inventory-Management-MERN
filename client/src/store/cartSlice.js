@@ -27,6 +27,7 @@ const cartSlice = createSlice({
                 })
             } else {
                 state.cartItems.push({
+                    description: itemToBeAdded.description,
                     id: itemToBeAdded.id,
                     name: itemToBeAdded.name,
                     img: itemToBeAdded.img,

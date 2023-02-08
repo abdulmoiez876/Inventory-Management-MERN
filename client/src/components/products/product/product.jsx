@@ -11,7 +11,8 @@ export default function Product(props) {
             id: props.id,
             name: props.name,
             price: props.price,
-            image: props.image,
+            img: props.img,
+            description: props.description
         }))
     }
 

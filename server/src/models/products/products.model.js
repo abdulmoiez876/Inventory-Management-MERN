@@ -27,7 +27,7 @@ function sleep(ms) {
 
 const getAllProducts = async () => {
     try {
-        await sleep(5000);
+        // await sleep(5000);
         return await products;
     } catch (err) {
         console.log(err)
