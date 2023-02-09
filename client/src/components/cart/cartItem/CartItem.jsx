@@ -24,10 +24,10 @@ export default function CartItem(props) {
                 </div>
             </div>  
             <h4 className='text-xl font-bold'>{props.price}</h4>
-            <div className="flex items-center w-16 justify-around">
-                <button className='bg-slate-500 p-2 rounded w-10 mx-2 h-8' onClick={incrementQuantityHandler}>+</button>
+            <div className="flex items-center w-16 justify-around gap-x-3">
+                <button className='bg-slate-500 p-2 rounded w-10 mx-2 h-8 text-2xl items-center flex' onClick={incrementQuantityHandler}>+</button>
                 <h4 className='text-xl font-bold'>{props.quantity}</h4>
-                <button className='bg-slate-500 p-2 rounded w-10 mx-2 h-8' onClick={decrementQuantityHandler}>-</button>
+                <button className='bg-slate-500 p-2 rounded w-10 mx-2 h-8 text-2xl items-center flex' onClick={decrementQuantityHandler}>-</button>
             </div>
             <h4 className='text-xl font-bold'>{props.totalPrice}</h4>
         </div>

@@ -52,20 +52,24 @@ const cartSlice = createSlice({
         },
         decrementProductQuantity(state, action) {
             const productIdToBeDecremented = action.payload;
-            
+
             const existingItem = state.cartItems.find(cartItem => cartItem.id === productIdToBeDecremented);
 
             state.cartTotalQuantity--;
             state.cartTotalPrice -= existingItem.price;
-            
+
             // if there is only one item of product in cart
-            if(existingItem.quantity <= 1) {
+            if (existingItem.quantity <= 1) {
                 state.cartItems = state.cartItems.filter(cartItem => cartItem.id !== productIdToBeDecremented);
-            }
-            else {
+            } else {
                 existingItem.quantity--;
                 existingItem.totalPrice -= existingItem.price;
             }
+        },
+        clearCart(state) {
+            state.cartItems = [];
+            state.cartTotalPrice = 0;
+            state.cartTotalQuantity = 0;
         }
     }
 })

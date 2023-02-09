@@ -1,15 +1,21 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
-import {useNavigate} from 'react-router-dom'
+import { useSelector, useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 
 import CartItem from './cartItem/CartItem';
+import { cartActions } from '../../store/cartSlice';
 
 export default function Cart() {
   const cart = useSelector(state => state.cart);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const redirectToProducts = () => {
     navigate('/products');
+  }
+
+  const clearCartHandler = () => {
+    dispatch(cartActions.clearCart());
   }
 
   return (
@@ -44,9 +50,13 @@ export default function Cart() {
                   description={item.description}
                 />)
               }
-              <div className='w-full flex items-center justify-end gap-x-4'>
-                <h4 className='font-bold text-3xl'>Grand Total: </h4>
-                <h3 className='font-bold text-3xl'>{cart.cartTotalPrice}</h3>
+              <div className='flex flex-col items-end bg-slate-100 gap-y-4'>
+                <div className='w-full flex items-center justify-end gap-x-4'>
+                  <h4 className='font-bold text-3xl'>Grand Total: </h4>
+                  <h3 className='font-bold text-3xl'>{cart.cartTotalPrice}</h3>
+                </div>
+                <button className='bg-red-500 p-4 rounded hover:bg-red-600 ease-in-out duration-200 w-1/6' onClick={clearCartHandler}>Clear Cart</button>
+                <button className='bg-green-500 p-4 rounded hover:bg-green-600 ease-in-out duration-200 w-1/6' onClick={redirectToProducts}>Continue Shopping</button>
               </div>
             </div>
           </div>
