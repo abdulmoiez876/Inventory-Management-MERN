@@ -12,9 +12,9 @@ export default function CartItem(props) {
             </div>  
             <h4 className='text-xl font-bold'>{props.price}</h4>
             <div className="flex items-center w-16 justify-around">
-                <button>+</button>
+                <button className='bg-slate-500 p-2 rounded w-10 mx-2 h-8'>+</button>
                 <h4 className='text-xl font-bold'>{props.quantity}</h4>
-                <button>-</button>
+                <button className='bg-slate-500 p-2 rounded w-10 mx-2 h-8'>-</button>
             </div>
             <h4 className='text-xl font-bold'>{props.totalPrice}</h4>
         </div>

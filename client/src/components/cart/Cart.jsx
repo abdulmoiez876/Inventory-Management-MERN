@@ -28,6 +28,10 @@ export default function Cart() {
             description={item.description}
           />)
         }
+        <div className='w-full flex items-center justify-end gap-x-4'>
+          <h4 className='font-bold text-3xl'>Grand Total: </h4>
+          <h3 className='font-bold text-3xl'>{cart.cartTotalPrice}</h3>
+        </div>
       </div>
     </div>
   )
