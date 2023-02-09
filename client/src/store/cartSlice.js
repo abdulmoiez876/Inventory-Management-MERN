@@ -42,14 +42,30 @@ const cartSlice = createSlice({
         },
         incrementProductQuantity(state, action) {
             const productIdToBeIncremented = action.payload;
-            console.log(productIdToBeIncremented);
 
             const existingItem = state.cartItems.find(cartItem => cartItem.id === productIdToBeIncremented);
 
             state.cartTotalQuantity++;
             state.cartTotalPrice += existingItem.price;
-            existingItem.quantity ++;
+            existingItem.quantity++;
             existingItem.totalPrice += existingItem.price;
+        },
+        decrementProductQuantity(state, action) {
+            const productIdToBeDecremented = action.payload;
+            
+            const existingItem = state.cartItems.find(cartItem => cartItem.id === productIdToBeDecremented);
+
+            state.cartTotalQuantity--;
+            state.cartTotalPrice -= existingItem.price;
+            
+            // if there is only one item of product in cart
+            if(existingItem.quantity <= 1) {
+                state.cartItems = state.cartItems.filter(cartItem => cartItem.id !== productIdToBeDecremented);
+            }
+            else {
+                existingItem.quantity--;
+                existingItem.totalPrice -= existingItem.price;
+            }
         }
     }
 })

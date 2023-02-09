@@ -1,17 +1,27 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
+import {useNavigate} from 'react-router-dom'
 
 import CartItem from './cartItem/CartItem';
 
 export default function Cart() {
   const cart = useSelector(state => state.cart);
+  const navigate = useNavigate();
+
+  const redirectToProducts = () => {
+    navigate('/products');
+  }
 
   return (
     <>
       {
-        cart.cartItems.length <= 0 ?
-          <h1 className='font-bold text-3xl text-center m-8'>No Items found in cart</h1> :
-
+        cart.cartItems.length <= 0
+          ?
+          <div className='flex flex-col items-center'>
+            <h1 className='font-bold text-3xl text-center m-8'>No Items found in cart</h1>
+            <button className='bg-slate-500 p-4 rounded hover:bg-slate-600 ease-in-out duration-200' onClick={redirectToProducts}>Continue Shopping</button>
+          </div>
+          :
           <div>
             <h1 className='p-2 font-bold text-5xl w-full text-center'>Cart</h1>
 
