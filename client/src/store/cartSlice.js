@@ -39,6 +39,17 @@ const cartSlice = createSlice({
                     position: 'bottom-left'
                 })
             }
+        },
+        incrementProductQuantity(state, action) {
+            const productIdToBeIncremented = action.payload;
+            console.log(productIdToBeIncremented);
+
+            const existingItem = state.cartItems.find(cartItem => cartItem.id === productIdToBeIncremented);
+
+            state.cartTotalQuantity++;
+            state.cartTotalPrice += existingItem.price;
+            existingItem.quantity ++;
+            existingItem.totalPrice += existingItem.price;
         }
     }
 })

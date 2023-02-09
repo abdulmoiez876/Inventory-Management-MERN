@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 * {
-    font-family: 'Montserrat';
+    font-family: 'Cabin', sans-serif;
 }
 
 .modal {
