@@ -10,6 +10,8 @@ import Navbar from './components/navbar/Navbar';
 import Cart from './components/cart/Cart';
 import Products from './components/products/Products';
 import Loading from './components/ui/loading/Loading';
+import Login from './components/auth/login/Login';
+import Signup from './components/auth/signup/Signup';
 
 import { getAllProducts } from './store/productsSlice';
 
@@ -34,12 +36,14 @@ function App() {
           <Loading />
         </Modal>
       }
-      <ToastContainer/>
-      <Navbar />
+      <ToastContainer />
+      {/* <Navbar /> */}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/products" element={<Products />} />
+        <Route path='/login' element={<Login />} />
+        <Route path='/signup' element={<Signup />} />
       </Routes>
     </>
   );
