@@ -1,5 +1,6 @@
 import {createSlice} from '@reduxjs/toolkit';
 import axios from 'axios';
+import {toast} from 'react-toastify';
 
 const authSlice = createSlice({
     name: 'auth',
@@ -8,6 +9,7 @@ const authSlice = createSlice({
         _id: '',
         name: '',
         email: '',
+        isAuthenticated: false,
     },
     reducers: {
 
@@ -16,16 +18,22 @@ const authSlice = createSlice({
 
 const authActions = authSlice.actions;
 
-const registerUser = () => {
-    return (dispatch) => {
+const registerUser = (userData) => {
+    return () => {
         try {
-            axios.post('http://localhost:8000/addNewUser', {})
+            axios.post('http://localhost:8000/addNewUser', userData)
             .then((response) => {
-                console.log(response);
-                localStorage.setItem('token', response.message.data)
+                const token = response.data;
+                
+                localStorage.setItem('authToken', token);
+                toast.success("User registered successfully!", {
+                    position: 'bottom-left'
+                });
             })
             .catch((error) => {
-                console.error(error);
+                toast.error(`${error.response.data}`, {
+                    position: 'bottom-left'
+                })
             })
         }
         catch (error) {
@@ -35,7 +43,8 @@ const registerUser = () => {
 }
 
 export {
-    authActions
+    authActions,
+    registerUser
 }
 
 export default authSlice;

@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 
 export default function Navbar() {
   const cart = useSelector(state => state.cart);
+  const auth = useSelector(state => state.auth);
 
   return (
     <div className="flex bg-slate-600 text-white items-center gap-x-6 h-14 p-2 w-full justify-between">
@@ -22,8 +23,17 @@ export default function Navbar() {
         <h2>{cart.cartTotalQuantity}</h2>
       </div>
 
-      <div className='flex'>
-
+      <div className='flex items-center gap-x-2'>
+        {
+          auth.isAuthenticated
+            ?
+            <button className="p-3 bg-slate-600 hover:bg-red-600 rounded-md ease-in-out duration-100">Logout</button>
+            :
+            <>
+              <Link to='/login' className="p-3 hover:bg-green-700 rounded-md ease-in-out duration-100">Login</Link>
+              <Link to='/signup' className="p-3 hover:bg-green-700 rounded-md ease-in-out duration-100">Register</Link>
+            </>
+        }
       </div>
     </div>
   )
