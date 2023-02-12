@@ -27,10 +27,6 @@ function App() {
     dispatch(getAllProducts());
   }, [dispatch])
 
-  // useEffect(() => {
-  //   navigate('/cart')
-  // }, [auth.isRegistered])
-
   return (
     <>
       {loading &&
