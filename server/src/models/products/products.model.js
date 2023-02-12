@@ -1,39 +1,75 @@
-const products = [{
-        id: 1,
-        name: 'Product 1',
-        description: 'this is the product description 1',
-        price: 100,
-        img: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-card-40-iphone14pro-202209_FMT_WHH?wid=508&hei=472&fmt=p-jpg&qlt=95&.v=1663611329204'
-    },
-    {
-        id: 2,
-        name: 'Product 2',
-        description: 'this is the product description 2',
-        price: 200,
-        img: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-card-40-iphone14pro-202209_FMT_WHH?wid=508&hei=472&fmt=p-jpg&qlt=95&.v=1663611329204'
-    },
-    {
-        id: 3,
-        name: 'Product 3',
-        description: 'this is the product description 3',
-        price: 300,
-        img: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-card-40-iphone14pro-202209_FMT_WHH?wid=508&hei=472&fmt=p-jpg&qlt=95&.v=1663611329204'
-    }
-]
+import Joi from 'joi';
 
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
+import products from './products.mongo.js';
+
+const productSchema = Joi.object({
+    id: Joi.number().integer().required(),
+    name: Joi.string().required(),
+    description: Joi.string().required(),
+    price: Joi.number().required(),
+    img: Joi.string().required()
+})
+
+const addNewProduct = async (productData) => {
+    try {
+        const { error } = productSchema.validate(productData);
+
+        if(error) {
+            return {
+                code: 400,
+                status: false,
+                message: error.details[0].message
+            }
+        }
+        else {
+            const existingProduct = await products.findOne({name: productData.name});
+
+            if(existingProduct) {
+                return {
+                    code: 400,
+                    status: false,
+                    message: 'Product already exists'
+                }
+            }
+            else {
+                const newProduct = await products.create(productData);
+
+                if(newProduct) {
+                    return {
+                        code: 201,
+                        status: true,
+                        message: 'Product added successfully'
+                    }
+                }
+                else {
+                    return {
+                        code: 500,
+                        status: false,
+                        message: 'Something went wrong'
+                    }
+                }
+            }
+        }
+    }
+    catch (error) {
+        return {
+            code: 500,
+            status: false,
+            message: 'Something went wrong'
+        }
+    }
 }
 
 const getAllProducts = async () => {
     try {
         // await sleep(5000);
-        return await products;
+        return await products.find({});
     } catch (err) {
         console.log(err)
     }
 }
 
 export {
+    addNewProduct,
     getAllProducts
 }
