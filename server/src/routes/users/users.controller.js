@@ -17,7 +17,7 @@ const httpAuthenticateUser = async (req, res) => {
     try {
         const result = await authenticateUser(req.body)
 
-        return res.status(result.code).send(result.message)
+        return res.status(result.code).send(result)
     }
     catch(error) {
         return res.status(500).send(error);

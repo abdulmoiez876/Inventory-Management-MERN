@@ -101,7 +101,7 @@ const authenticateUser = async (userData) => {
                 else {
                     return {
                         code: 404,
-                        status: true,
+                        status: false,
                         message: "Incorrect password!"
                     }
                 }

@@ -1,6 +1,10 @@
-import {createSlice} from '@reduxjs/toolkit';
+import {
+    createSlice
+} from '@reduxjs/toolkit';
 import axios from 'axios';
-import {toast} from 'react-toastify';
+import {
+    toast
+} from 'react-toastify';
 import jwt_decode from 'jwt-decode';
 
 const authSlice = createSlice({
@@ -37,37 +41,56 @@ const registerUser = (userData, navigate) => {
     return (dispatch) => {
         try {
             axios.post('http://localhost:8000/addNewUser', userData)
-            .then((response) => {
-                const token = response.data;
-                
-                localStorage.setItem('authToken', token);
+                .then((response) => {
+                    const token = response.data;
 
-                const decoded = jwt_decode(token);
-                dispatch(authActions.login(decoded))
-                toast.success("User registered successfully!", {
-                    position: 'bottom-left'
-                });
-                navigate('/cart')
-            })
-            .catch((error) => {
-                toast.error(`${error.response.data}`, {
-                    position: 'bottom-left'
+                    localStorage.setItem('authToken', token);
+
+                    const decoded = jwt_decode(token);
+                    dispatch(authActions.login(decoded))
+                    toast.success("User registered successfully!", {
+                        position: 'bottom-left'
+                    });
+                    navigate('/cart')
                 })
-            })
-        }
-        catch (error) {
+                .catch((error) => {
+                    toast.error(`${error.response.data}`, {
+                        position: 'bottom-left'
+                    })
+                })
+        } catch (error) {
             console.error(error);
         }
     }
 }
 
-const loginUser = (userDate, navigate) => {
-    
+const loginUser = (userData, navigate) => {
+    return async (dispatch) => {
+        try {
+            const response = await axios.post('http://localhost:8000/authenticateUser', userData);
+            
+            if(response.data.status) {
+                const token = response.data.message;
+                const decoded = jwt_decode(token);
+
+                dispatch(authActions.login(decoded));
+                toast.success('Login Successful!', {
+                    position: 'bottom-left'
+                })
+                navigate('/cart')
+            }
+        } catch (error) {
+            toast.error(`${error.response.data.message}`, {
+                position: 'bottom-left'
+            })
+        }
+    }
 }
 
 export {
     authActions,
-    registerUser
+    registerUser,
+    loginUser
 }
 
 export default authSlice;
