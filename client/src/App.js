@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 import Modal from "react-overlays/Modal";
+import jwtDecode from 'jwt-decode';
 
 import Home from './components/home/Home';
 import Navbar from './components/navbar/Navbar';
@@ -14,6 +15,7 @@ import Login from './components/auth/login/Login';
 import Signup from './components/auth/signup/Signup';
 
 import { getAllProducts } from './store/productsSlice';
+import { authActions } from './store/authSlice';
 
 function App() {
   const dispatch = useDispatch();
@@ -25,6 +27,10 @@ function App() {
 
   useEffect(() => {
     dispatch(getAllProducts());
+    
+    if(localStorage.getItem('authToken')) {
+      dispatch(authActions.login(localStorage.getItem('authToken')));
+    }
   }, [dispatch])
 
   return (

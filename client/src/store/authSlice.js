@@ -17,12 +17,13 @@ const authSlice = createSlice({
     },
     reducers: {
         login(state, action) {
+            const token = action.payload;
+            
+            const decoded = jwt_decode(token);
             state.isAuthenticated = true;
-            state.name = action.payload.name;
-            state.email = action.payload.email;
-            state.token = action.payload.token;
-
-            localStorage.setItem('authToken', action.payload.token);
+            state.name = decoded.name;
+            state.email = decoded.email;
+            state.token = token;
         },
         logout(state) {
             localStorage.removeItem('authToken');
@@ -43,11 +44,10 @@ const registerUser = (userData, navigate) => {
             axios.post('http://localhost:8000/addNewUser', userData)
                 .then((response) => {
                     const token = response.data;
+                    
+                    localStorage.setItem('authToken', JSON.stringify(token));
 
-                    localStorage.setItem('authToken', token);
-
-                    const decoded = jwt_decode(token);
-                    dispatch(authActions.login(decoded))
+                    dispatch(authActions.login(token))
                     toast.success("User registered successfully!", {
                         position: 'bottom-left'
                     });
@@ -71,16 +71,16 @@ const loginUser = (userData, navigate) => {
             
             if(response.data.status) {
                 const token = response.data.message;
-                const decoded = jwt_decode(token);
-
-                dispatch(authActions.login(decoded));
+                
+                localStorage.setItem('authToken', token);
+                dispatch(authActions.login(token));
                 toast.success('Login Successful!', {
                     position: 'bottom-left'
                 })
                 navigate('/cart')
             }
         } catch (error) {
-            toast.error(`${error.response.data.message}`, {
+            toast.error(error.response, {
                 position: 'bottom-left'
             })
         }
