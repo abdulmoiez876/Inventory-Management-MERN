@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
@@ -17,13 +17,19 @@ import { getAllProducts } from './store/productsSlice';
 
 function App() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const loading = useSelector(state => state.ui.loading);
+  const auth = useSelector(state => state.auth);
 
   const renderBackdrop = (props) => <div className={`backdrop`} {...props} />;
 
   useEffect(() => {
     dispatch(getAllProducts());
   }, [dispatch])
+
+  useEffect(() => {
+    navigate('/cart')
+  }, [auth.isRegistered])
 
   return (
     <>

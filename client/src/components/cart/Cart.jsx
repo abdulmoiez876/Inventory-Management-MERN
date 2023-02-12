@@ -1,12 +1,13 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 
 import CartItem from './cartItem/CartItem';
 import { cartActions } from '../../store/cartSlice';
 
 export default function Cart() {
   const cart = useSelector(state => state.cart);
+  const auth = useSelector(state => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -57,6 +58,13 @@ export default function Cart() {
                 </div>
                 <button className='bg-red-500 p-4 rounded hover:bg-red-600 ease-in-out duration-200 w-1/6' onClick={clearCartHandler}>Clear Cart</button>
                 <button className='bg-green-500 p-4 rounded hover:bg-green-600 ease-in-out duration-200 w-1/6' onClick={redirectToProducts}>Continue Shopping</button>
+                {
+                  auth.isAuthenticated
+                  ?
+                  <button className='bg-blue-500 p-4 rounded hover:bg-blue-600 ease-in-out duration-200 w-1/6' onClick={redirectToProducts}>Checkout</button>
+                  :
+                  <Link to='/login' className='bg-blue-500 p-4 rounded hover:bg-blue-600 ease-in-out duration-200 w-1/6 text-center' onClick={redirectToProducts}>Login To Checkout</Link>
+                }
               </div>
             </div>
           </div>
